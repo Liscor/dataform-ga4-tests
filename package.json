@@ -1,0 +1,6 @@
+{
+  "name": "Dataform-GA4-Tests",
+  "dependencies": {
+    "@dataform/core": "2.4.2"
+  }
+}
