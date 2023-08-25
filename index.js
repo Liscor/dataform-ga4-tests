@@ -13,6 +13,10 @@ module.exports = (params) => {
         dataset: "ga4_obfuscated_sample_ecommerce",
         table: "events_*"
       },
+      config:{
+        schema: "ga4_testing",
+        //assertionSchema: "ga4_testing"
+      },
       ...params
     };
     
@@ -24,8 +28,8 @@ module.exports = (params) => {
 
     let result = {
       ga4_source: ga4_source,
-      ecommerce_test: ecommerce_test(params.table,params.date_start,params.date_end),
-      session_quality_test: session_quality_test(params.table,params.date_start, params.date_end),
+      ecommerce_test: ecommerce_test(params.table,params.date_start,params.date_end,params.config),
+      session_quality_test: session_quality_test(params.table,params.date_start, params.date_end, params.config),
     };
 
     return result;

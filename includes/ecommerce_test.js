@@ -1,5 +1,5 @@
-module.exports = (table,date_start,date_end) => {
-  const bad_ecc_events= publish("bad_ecc_events").query(ctx => `
+module.exports = (table,date_start,date_end,config) => {
+  const bad_ecc_events= publish("bad_ecc_events",config).query(ctx => `
     select
       event_timestamp
       ,event_name
@@ -29,7 +29,7 @@ module.exports = (table,date_start,date_end) => {
       )
   `)
 
-  const ecc_events_overview = publish("ecc_events_overview").query(ctx => `
+  const ecc_events_overview = publish("ecc_events_overview",config).query(ctx => `
     with bad_ecc_events as(
       select 
         event_name
@@ -59,7 +59,7 @@ module.exports = (table,date_start,date_end) => {
         using(event_name)
     `)
     
-    const ecc_events_test = assert("ecc_events_test").query(ctx => `
+    const ecc_events_test = assert("ecc_events_test",config).query(ctx => `
       select
         event_name
         ,bad_ecc_events

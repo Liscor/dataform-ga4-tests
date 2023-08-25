@@ -1,5 +1,5 @@
-module.exports = (table,date_start,date_end) => {
-    const sleeper_sessions = publish("sleeper_sessions").query(ctx => `
+module.exports = (table,date_start,date_end,config) => {
+    const sleeper_sessions = publish("sleeper_sessions",config).query(ctx => `
         with sleeper_sessions as(
             select 
                 session_id,
@@ -25,7 +25,7 @@ module.exports = (table,date_start,date_end) => {
             array_length(event_names) <= 1
     `)
 
-    const missing_ids = publish("missing_ids").query(ctx => `
+    const missing_ids = publish("missing_ids",config).query(ctx => `
         select
             event_timestamp
             ,(select value.int_value from unnest(event_params) where key = "ga_session_id") as ga_session_id
@@ -40,7 +40,7 @@ module.exports = (table,date_start,date_end) => {
             )
     `)
 
-    const marketing_parameters = publish("marketing_parameters").query(ctx => `
+    const marketing_parameters = publish("marketing_parameters",config).query(ctx => `
         with marketing_parameters as( 
             SELECT 
                 MIN(DATE(timestamp_micros(event_timestamp))) as session_date
@@ -70,6 +70,8 @@ module.exports = (table,date_start,date_end) => {
 
 
     `)
+
+    
 
     return { sleeper_sessions, missing_ids,marketing_parameters }
 }
