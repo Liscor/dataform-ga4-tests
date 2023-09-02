@@ -29,6 +29,7 @@ module.exports = (table,date_start,date_end,config) => {
       )
   `)
 
+
   const ecc_events_overview = publish("ecc_events_overview",config).query(ctx => `
     with bad_ecc_events as(
       select 
@@ -48,7 +49,7 @@ module.exports = (table,date_start,date_end,config) => {
         _table_suffix between '${date_start}' and '${date_end}'
         and event_name in ("view_promotion","view_item_list","view_item","select_item","add_to_cart","add_to_wishlist","remove_from_cart","view_cart","begin_checkout","add_payment_info","add_shipping_info","purchase")
       group by 1                                                              
-      )
+    )
       select
         ee.event_name
         ,coalesce(bee.bad_ecc_events,0) as bad_ecc_events

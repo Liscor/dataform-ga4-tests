@@ -1,5 +1,7 @@
 const ecommerce_test = require("./includes/ecommerce_test");
 const session_quality_test = require("./includes/session_quality_test");
+const user_quality_test = require("./includes/user_quality_test");
+
 
 
 module.exports = (params) => {
@@ -15,7 +17,6 @@ module.exports = (params) => {
       },
       config:{
         schema: "ga4_testing",
-        //assertionSchema: "ga4_testing"
       },
       ...params
     };
@@ -30,6 +31,7 @@ module.exports = (params) => {
       ga4_source: ga4_source,
       ecommerce_test: ecommerce_test(params.table,params.date_start,params.date_end,params.config),
       session_quality_test: session_quality_test(params.table,params.date_start, params.date_end, params.config),
+      user_quality_test: user_quality_test(params.table,params.date_start, params.date_end, params.config),
     };
 
     return result;
