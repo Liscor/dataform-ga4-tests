@@ -71,6 +71,30 @@ module.exports = (table,date_start,date_end,config) => {
         bad_ecc_events / ecc_events >= 0.10
     `)
 
-  return { bad_ecc_events,ecc_events_overview, ecc_events_test };
+    const missing_ids = publish("missing_ids",config).query(ctx => `
+      with missing_ids as(
+        select
+            event_name
+            ,(select value.int_value from unnest(event_params) where key = "ga_session_id") as ga_session_id
+            ,user_pseudo_id
+        from 
+            ${ctx.ref(table)}
+        where
+            _table_suffix between '${date_start}' and '${date_end}'
+            and (
+                (select value.int_value from unnest(event_params) where key = "ga_session_id") is null
+                or user_pseudo_id is null
+            )
+      )
+      select
+        event_name
+        ,sum(if(ga_session_id is null,1,0)) as missing_session_ids
+        ,sum(if(user_pseudo_id is null,1,0)) as missing_user_pseudo_ids
+      from
+        missing_ids
+      group by 1
+    `)
+
+  return { bad_ecc_events,ecc_events_overview, ecc_events_test, missing_ids };
 }
 

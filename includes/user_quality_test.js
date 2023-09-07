@@ -4,7 +4,7 @@ module.exports = (table,date_start,date_end,config) => {
         with user_sessions as (
             select
                 user_pseudo_id
-                ,array_agg(struct(session_datetimes[offset(0)] as session_datetime,ga_session_number as ga_session_number)) as session_numbers
+                ,array_agg(struct(events[offset(0)].event_datetime as session_datetime,ga_session_id_date as ga_session_id_date,ga_session_number as ga_session_number, ga_session_id as ga_session_id)) as session_numbers
             from
                 ${ctx.ref("sessions")}
             group by 1
@@ -65,9 +65,9 @@ module.exports = (table,date_start,date_end,config) => {
             ${ctx.ref("users_agg")}
         where
             bad_session_number_users / users >= 0.2
-            or bad_first_date_quality / users >= 0.2
+            or bad_first_date_users / users >= 0.2
 
     `)
 
-    return {users,user_quality_test,users_agg}
+    return {users,users_agg,user_quality_test}
 }

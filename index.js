@@ -1,19 +1,19 @@
 const ecommerce_test = require("./includes/ecommerce_test");
 const session_quality_test = require("./includes/session_quality_test");
 const user_quality_test = require("./includes/user_quality_test");
+const overview = require("./includes/overview");
 
 
 
 module.exports = (params) => {
 
     params = {
-      table: "events_*",
       date_start: "20230101",
       date_end: "20230601",
       ga4:{
         project: "bigquery-public-data",
         dataset: "ga4_obfuscated_sample_ecommerce",
-        table: "events_*"
+        table: "events_*",
       },
       config:{
         schema: "ga4_testing",
@@ -29,9 +29,10 @@ module.exports = (params) => {
 
     let result = {
       ga4_source: ga4_source,
-      ecommerce_test: ecommerce_test(params.table,params.date_start,params.date_end,params.config),
-      session_quality_test: session_quality_test(params.table,params.date_start, params.date_end, params.config),
-      user_quality_test: user_quality_test(params.table,params.date_start, params.date_end, params.config),
+      ecommerce_test: ecommerce_test(params.ga4.table,params.date_start,params.date_end,params.config),
+      session_quality_test: session_quality_test(params.ga4.table,params.date_start, params.date_end, params.config),
+      user_quality_test: user_quality_test(params.ga4.table,params.date_start, params.date_end, params.config),
+      overview: overview(params.ga4.table,params.date_start, params.date_end, params.config),
     };
 
     return result;
