@@ -20,6 +20,19 @@ module.exports = (params) => {
       },
       ...params
     };
+
+    operate("create_testing_schema").queries(ctx => 
+      `
+      if not exists (
+          select 1
+          from "${params.ga4.project}.${params.ga4.dataset}.schemata"
+          where schema_name = '${params.config.schema}'
+      )
+      then
+          create schema `${params.ga4.project}.${params.ga4.dataset}.${params.config.schema}`;
+      end if;
+      `
+      );
     
     const ga4_source = declare({
       database: params.ga4.project,
@@ -28,6 +41,7 @@ module.exports = (params) => {
     });
 
     let result = {
+      setup: setup(params),
       ga4_source: ga4_source,
       ecommerce_test: ecommerce_test(params.ga4.table,params.date_start,params.date_end,params.config),
       session_quality_test: session_quality_test(params.ga4.table,params.date_start, params.date_end, params.config),
