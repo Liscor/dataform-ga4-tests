@@ -21,18 +21,18 @@ module.exports = (params) => {
       ...params
     };
 
-    operate("create_testing_schema").queries(ctx => 
-      `
-      if not exists (
-          select 1
-          from \`${params.ga4.project}.INFORMATION_SCHEMA.SCHEMATA\`
-          where schema_name = '${params.config.schema}'
-      )
-      then
-          create schema \`${params.ga4.project}.${params.config.schema}\`;
-      end if;
-      `
-    );
+    // operate("create_testing_schema").queries(ctx => 
+    //   `
+    //   if not exists (
+    //       select 1
+    //       from \`${params.ga4.project}.INFORMATION_SCHEMA.SCHEMATA\`
+    //       where schema_name = '${params.config.schema}'
+    //   )
+    //   then
+    //       create schema \`${params.ga4.project}.${params.config.schema}\`;
+    //   end if;
+    //   `
+    // );
     
     const ga4_source = declare({
       database: params.ga4.project,
