@@ -29,10 +29,10 @@ module.exports = (params) => {
           where schema_name = '${params.config.schema}'
       )
       then
-          create schema `${params.ga4.project}.${params.ga4.dataset}.${params.config.schema}`;
+          create schema "${params.ga4.project}.${params.ga4.dataset}.${params.config.schema}";
       end if;
       `
-      );
+    );
     
     const ga4_source = declare({
       database: params.ga4.project,
