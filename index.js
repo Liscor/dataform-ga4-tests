@@ -25,7 +25,7 @@ module.exports = (params) => {
       `
       if not exists (
           select 1
-          from \`${params.ga4.project}.${params.ga4.dataset}.schemata\`
+          from \`${params.ga4.project}.INFORMATION_SCHEMA.SCHEMATA\`
           where schema_name = '${params.config.schema}'
       )
       then
