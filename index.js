@@ -41,7 +41,6 @@ module.exports = (params) => {
     });
 
     let result = {
-      setup: setup(params),
       ga4_source: ga4_source,
       ecommerce_test: ecommerce_test(params.ga4.table,params.date_start,params.date_end,params.config),
       session_quality_test: session_quality_test(params.ga4.table,params.date_start, params.date_end, params.config),
